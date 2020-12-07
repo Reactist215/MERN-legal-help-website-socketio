@@ -13,9 +13,6 @@ const UserSchema = new Schema(
             type: String,
             trim: true
         },
-        admin: {
-            type: Boolean
-        },
         phone: {
             type: String,
             trim: true
@@ -65,12 +62,12 @@ const UserSchema = new Schema(
     }
 );
 
-UserSchema.methods.isValidPassword = function (password) {
+UserSchema.methods.isValidPassword = function(password) {
     return bcrypt.compare(password, this.password);
 };
 
 // Before Saving hash the password with bcrypt, using the default 10 rounds for salt
-UserSchema.pre('save', function (next) {
+UserSchema.pre('save', function(next) {
     if (this.password !== '' && this.isModified('password')) {
         bcrypt.genSalt(10, (err, salt) => {
             bcrypt.hash(this.password, salt, (err, res) => {

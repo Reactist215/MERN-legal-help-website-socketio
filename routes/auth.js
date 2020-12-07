@@ -25,12 +25,11 @@ const {
 // router.post('/register', [checkRegistrationFields], (req, res) => {
 router.post('/register', [checkRegistrationFields], (req, res) => {
     let errors = [];
-    const { firstName, lastName, phone, password, email, admin } = req.body;
+    const { firstName, lastName, phone, password, email } = req.body;
     User.findOne({ email }).then(user => {
         if (user) {
             errors.push({ param: 'email', msg: 'Email is already taken' });
-
-            console.log('[user]', createErrorObject(errors))
+            console.log('[user]', createErrorObject(errors));
             return res.send({ errors: createErrorObject(errors) });
         }
         /** Assign Gravatar */
@@ -42,11 +41,10 @@ router.post('/register', [checkRegistrationFields], (req, res) => {
         const newUser = new User({
             firstName,
             lastName,
-            admin,
             phone,
             password,
             from: 'custom-db',
-            role: 'admin',
+            role: 'user',
             photoURL: avatar,
             email
         });
@@ -67,7 +65,7 @@ router.post('/register', [checkRegistrationFields], (req, res) => {
                 });
             })
             .catch(err => {
-                console.log('[be] err', err)
+                console.log('[be] err', err);
                 res.send({
                     err,
                     error: 'Something went wrong, Please check the fields again'

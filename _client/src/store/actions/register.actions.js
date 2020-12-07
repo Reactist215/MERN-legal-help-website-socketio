@@ -10,27 +10,27 @@ export default {
     REGISTER_ERROR,
     REGISTER_SUCCESS,
 
-    submitRegister,
+    submitRegister
     // registerWithFirebase
-}
+};
 
 function submitRegister({ email, password, firstName, lastName, phone }) {
-    return (dispatch) =>
-        jwtService.createUser({
-            email,
-            password,
-            firstName,
-            lastName,
-            phone,
-            admin: false
-        })
-            .then((user) => {
+    return dispatch =>
+        jwtService
+            .createUser({
+                email,
+                password,
+                firstName,
+                lastName,
+                phone,
+                role: 'user'
+            })
+            .then(user => {
                 dispatch(userActions.setUserData(user));
                 return dispatch({
                     type: REGISTER_SUCCESS
                 });
-            }
-            )
+            })
             .catch(error => {
                 return dispatch({
                     type: REGISTER_ERROR,

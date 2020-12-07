@@ -11,7 +11,7 @@ const { createErrorObject } = require('../middleware/authenticate');
  * @description GET /api/messages/:room_id
  */
 router.get('/:room_id', passport.authenticate('jwt', { session: false }), async (req, res) => {
-    console.log('[Get Message]', req.params.room_id === 'null')
+    console.log('[Get Message]', req.params.room_id === 'null');
     const messages = await Message.find({ room: req.params.room_id });
 
     if (messages) {
@@ -34,7 +34,7 @@ router.post('/', passport.authenticate('jwt', { session: false }), async (req, r
 
     const newMessage = new Message({
         content: req.body.content,
-        admin: req.body.admin ? true : false,
+        admin: req.body.role === 'admin' ? true : false,
         user: req.user.id,
         room: req.body.roomId
     }).save();
